@@ -105,17 +105,17 @@ class App extends Component {
         <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a
             className="navbar-brand col-sm-3 col-md-2 mr-0"
-            href="http://www.dappuniversity.com/bootcamp"
+            href="https://www.reddit.com/r/wallstreetbets"
             target="_blank"
             rel="noopener noreferrer"
           >
         <img src={dbank} className="App-logo" alt="logo" height="32"/>
-          <b>d₿ank</b>
+          <b>Wall Street Bets</b>
         </a>
         </nav>
         <div className="container-fluid mt-5 text-center">
         <br></br>
-          <h1>Welcome to d₿ank</h1>
+          <h1>Welcome to r/WallStreetBets</h1>
           <h2>{this.state.account}</h2>
           <br></br>
           <div className="row">

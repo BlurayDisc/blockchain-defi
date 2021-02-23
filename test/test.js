@@ -1,7 +1,7 @@
 import { tokens, ether, ETHER_ADDRESS, EVM_REVERT, wait } from './helpers'
 
 const Token = artifacts.require('./Token')
-const DecentralizedBank = artifacts.require('./dBank')
+const DecentralizedBank = artifacts.require('./Bank')
 
 require('chai')
   .use(require('chai-as-promised'))
@@ -22,11 +22,11 @@ contract('dBank', ([deployer, user]) => {
   describe('testing token contract...', () => {
     describe('success', () => {
       it('checking token name', async () => {
-        expect(await token.name()).to.be.eq('Decentralized Bank Currency')
+        expect(await token.name()).to.be.eq('Run Away Token')
       })
 
       it('checking token symbol', async () => {
-        expect(await token.symbol()).to.be.eq('DBC')
+        expect(await token.symbol()).to.be.eq('RAT')
       })
 
       it('checking token initial total supply', async () => {
