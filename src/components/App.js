@@ -1,8 +1,8 @@
 import { Tabs, Tab } from 'react-bootstrap'
-import dBank from '../abis/dBank.json'
 import React, { Component } from 'react';
 import Token from '../abis/Token.json'
-import dbank from '../dbank.png';
+import Bank from '../abis/Bank.json'
+import dBank from '../dbank.png';
 import Web3 from 'web3';
 import './App.css';
 
@@ -29,9 +29,9 @@ class App extends Component {
       //load contracts
       try {
         const token = new web3.eth.Contract(Token.abi, Token.networks[netId].address)
-        const dbank = new web3.eth.Contract(dBank.abi, dBank.networks[netId].address)
-        const dBankAddress = dBank.networks[netId].address
-        this.setState({token: token, dbank: dbank, dBankAddress: dBankAddress})
+        const bank = new web3.eth.Contract(Bank.abi, Bank.networks[netId].address)
+        const bankAddress = Bank.networks[netId].address
+        this.setState({token: token, bank: bank, bankAddress: bankAddress})
       } catch (e) {
         console.log('Error', e)
         window.alert('Contracts not deployed to the current network')
@@ -43,9 +43,9 @@ class App extends Component {
   }
 
   async deposit(amount) {
-    if(this.state.dbank!=='undefined'){
+    if(this.state.bank!=='undefined'){
       try{
-        await this.state.dbank.methods.deposit().send({value: amount.toString(), from: this.state.account})
+        await this.state.bank.methods.deposit().send({value: amount.toString(), from: this.state.account})
       } catch (e) {
         console.log('Error, deposit: ', e)
       }
@@ -54,9 +54,9 @@ class App extends Component {
 
   async withdraw(e) {
     e.preventDefault()
-    if(this.state.dbank!=='undefined'){
+    if(this.state.bank!=='undefined'){
       try{
-        await this.state.dbank.methods.withdraw().send({from: this.state.account})
+        await this.state.bank.methods.withdraw().send({from: this.state.account})
       } catch(e) {
         console.log('Error, withdraw: ', e)
       }
@@ -64,9 +64,9 @@ class App extends Component {
   }
 
   async borrow(amount) {
-    if(this.state.dbank!=='undefined'){
+    if(this.state.bank!=='undefined'){
       try{
-        await this.state.dbank.methods.borrow().send({value: amount.toString(), from: this.state.account})
+        await this.state.bank.methods.borrow().send({value: amount.toString(), from: this.state.account})
       } catch (e) {
         console.log('Error, borrow: ', e)
       }
@@ -75,12 +75,12 @@ class App extends Component {
 
   async payOff(e) {
     e.preventDefault()
-    if(this.state.dbank!=='undefined'){
+    if(this.state.bank!=='undefined'){
       try{
-        const collateralEther = await this.state.dbank.methods.collateralEther(this.state.account).call({from: this.state.account})
+        const collateralEther = await this.state.bank.methods.collateralEther(this.state.account).call({from: this.state.account})
         const tokenBorrowed = collateralEther/2
-        await this.state.token.methods.approve(this.state.dBankAddress, tokenBorrowed.toString()).send({from: this.state.account})
-        await this.state.dbank.methods.payOff().send({from: this.state.account})
+        await this.state.token.methods.approve(this.state.bankAddress, tokenBorrowed.toString()).send({from: this.state.account})
+        await this.state.bank.methods.payOff().send({from: this.state.account})
       } catch(e) {
         console.log('Error, pay off: ', e)
       }
@@ -93,9 +93,9 @@ class App extends Component {
       web3: 'undefined',
       account: '',
       token: null,
-      dbank: null,
+      bank: null,
       balance: 0,
-      dBankAddress: null
+      bankAddress: null
     }
   }
 
@@ -109,7 +109,7 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-        <img src={dbank} className="App-logo" alt="logo" height="32"/>
+        <img src={dBank} className="App-logo" alt="logo" height="32"/>
           <b>Wall Street Bets</b>
         </a>
         </nav>
@@ -117,6 +117,7 @@ class App extends Component {
         <br></br>
           <h1>Welcome to r/WallStreetBets</h1>
           <h2>{this.state.account}</h2>
+          <h4>Your Available Balance: {Web3.utils.fromWei(this.state.balance.toString(), 'ether')}</h4>
           <br></br>
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">

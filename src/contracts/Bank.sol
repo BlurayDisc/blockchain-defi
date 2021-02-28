@@ -39,8 +39,7 @@ contract Bank {
 
         // 1e15 gwei (10% of 0.01 ETH) / 31577600 (seconds in 365.25 days)
         uint interestPerSecond = 31668017 * (userBalance / 1e16);
-        // interest is inversed due to we are at r/wallstreetbets
-        uint interest = -interestPerSecond * hodlTime;
+        uint interest = interestPerSecond * hodlTime;
 
         msg.sender.transfer(userBalance);
         token.mint(msg.sender, interest);
